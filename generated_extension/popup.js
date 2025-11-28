@@ -1,1 +1,44 @@
-document.addEventListener('DOMContentLoaded', function() { chrome.tabs.query({active: true, currentWindow: true}, function(tabs) { chrome.scripting.executeScript({target: {tabId: tabs[0].id}, function: extractMetaData}); }); document.getElementById('copy-button').addEventListener('click', copyToClipboard);});function extractMetaData() { const metaTitle = document.querySelector('title')?.innerText; const metaDescription = document.querySelector('meta[name="description"]')?.getAttribute('content'); const canonical = document.querySelector('link[rel="canonical"]')?.getAttribute('href'); const h1 = document.querySelector('h1')?.innerText; chrome.runtime.sendMessage({ metaTitle, metaDescription, canonical, h1 });}function copyToClipboard() { const table = document.getElementById('meta-data'); const data = {}; for (let row of table.rows) { const key = row.cells[0].innerText; const value = row.cells[1].innerText; data[key] = value; } navigator.clipboard.writeText(JSON.stringify(data));}chrome.runtime.onMessage.addListener((message) => { const metaDataTable = document.getElementById('meta-data'); metaDataTable.innerHTML += `<tr><td class='py-2'>Meta Title</td><td class='py-2'>${message.metaTitle || 'N/A'}</td></tr>`; metaDataTable.innerHTML += `<tr><td class='py-2'>Meta Description</td><td class='py-2'>${message.metaDescription || 'N/A'}</td></tr>`; metaDataTable.innerHTML += `<tr><td class='py-2'>Canonical Tag</td><td class='py-2'>${message.canonical || 'N/A'}</td></tr>`; metaDataTable.innerHTML += `<tr><td class='py-2'>H1 Header</td><td class='py-2'>${message.h1 || 'N/A'}</td></tr>`; });
+(function(){
+  const $ = (sel)=>document.querySelector(sel);
+  const switchEl = $('#dwSwitch');
+  const chipEl = $('#statusChip');
+  const hintEl = $('#dwHint');
+  const btnActive = $('#openActive');
+
+  function setUI(enabled){
+    switchEl.checked = !!enabled;
+    chipEl.textContent = enabled ? 'ON' : 'OFF';
+    chipEl.style.background = enabled ? 'linear-gradient(135deg, rgba(0,255,209,.24), rgba(124,77,255,.18))' : 'linear-gradient(135deg, rgba(124,77,255,.24), rgba(0,255,209,.18))';
+    hintEl.textContent = enabled ? 'Deep Work is ON. Distracting sites blocked, other tabs muted, pages darkened.' : 'Toggle to enter Deep Work mode.';
+  }
+
+  function getState(){
+    return new Promise((resolve)=>{
+      chrome.storage.local.get(['deepworkEnabled'], (res)=> resolve(!!res.deepworkEnabled));
+    });
+  }
+
+  async function init(){
+    const enabled = await getState();
+    setUI(enabled);
+
+    switchEl.addEventListener('change', ()=>{
+      const enabled = switchEl.checked;
+      chrome.runtime.sendMessage({type:'deepwork:toggle', enabled});
+      setUI(enabled);
+    });
+
+    btnActive.addEventListener('click', async ()=>{
+      // Quick: toggle mute state of current tab only (for users who want to let a second tab speak)
+      let [tab] = await chrome.tabs.query({active:true, currentWindow:true});
+      if(!tab) return;
+      chrome.tabs.update(tab.id, {muted: !tab.mutedInfo?.muted});
+    });
+
+    chrome.runtime.onMessage.addListener((msg)=>{
+      if(msg && msg.type==='deepwork:state'){ setUI(!!msg.enabled); }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();

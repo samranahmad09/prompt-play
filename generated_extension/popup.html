@@ -1,1 +1,52 @@
-<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><link rel='stylesheet' href='styles.css'><title>Meta Data Extractor</title></head><body><div id='content' class='rounded-lg shadow-lg p-4'><h1 class='text-xl mb-4'>Meta Data Extractor</h1><table id='meta-table' class='w-full text-left table-auto mb-4'><thead><tr class='border-b'><th class='pb-2'>Property</th><th class='pb-2'>Value</th></tr></thead><tbody id='meta-data'></tbody></table><button id='copy-button' class='mt-4 bg-gradient-to-r from-pink-500 to-pink-700 text-white rounded-lg px-4 py-2'>Copy JSON</button></div><script src='popup.js'></script></body></html>
+<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Deep Work</title><link rel='stylesheet' href='styles.css'></head><body class='dw-body'>
+  <div id='app' class='dw-app fade-in slide-up'>
+    <header class='dw-header'>
+      <div class='dw-brand'>
+        <img src='icon.svg' alt='Deep Work' class='dw-logo' />
+        <div class='dw-title-wrap'>
+          <h1 class='dw-title'>Deep Work</h1>
+          <p class='dw-subtitle'>Enter distraction-free focus mode</p>
+        </div>
+      </div>
+      <div class='dw-toggle'>
+        <input id='dwSwitch' type='checkbox' class='dw-switch-input' aria-label='Toggle Deep Work Mode'>
+        <label for='dwSwitch' class='dw-switch-label' tabindex='0'>
+          <span class='dw-switch-track'></span>
+          <span class='dw-switch-thumb'></span>
+          <span class='dw-switch-glow'></span>
+        </label>
+      </div>
+    </header>
+
+    <main class='dw-main glass'>
+      <div class='dw-status'>
+        <div class='dw-chip' id='statusChip'>OFF</div>
+        <div class='dw-detail'>
+          <p id='dwHint'>Toggle to block: facebook.com, instagram.com, reddit.com. Other tabs will be muted and pages darkened.</p>
+        </div>
+      </div>
+      <section class='dw-rules'>
+        <h2 class='dw-h2'>When ON</h2>
+        <ul class='dw-list'>
+          <li>Blocks facebook.com, instagram.com, reddit.com</li>
+          <li>Mutes all tabs except the active one</li>
+          <li>Applies a dark grey theme to pages</li>
+          <li>Logs your focus start time</li>
+        </ul>
+        <h2 class='dw-h2'>When OFF</h2>
+        <ul class='dw-list'>
+          <li>Unblocks everything</li>
+          <li>Unmutes tabs</li>
+          <li>Resets page theme</li>
+          <li>Shows how long you focused</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class='dw-footer'>
+      <button id='openActive' class='dw-btn' title='Open active tab controls'>Active Tab Audio</button>
+      <span class='dw-footnote'>Stay in flow. Be remarkable.</span>
+    </footer>
+  </div>
+  <script src='popup.js'></script>
+</body></html>
