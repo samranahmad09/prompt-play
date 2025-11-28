@@ -1,57 +1,7 @@
 {
-  "manifest_version": 3,
-  "name": "Deep Work - Focus Lock",
-  "version": "1.0.0",
-  "description": "Block distracting sites, mute other tabs, and bathe the web in sleek dark mode while you focus. One switch to enter Deep Work.",
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icon.svg",
-      "32": "icon.svg",
-      "48": "icon.svg",
-      "128": "icon.svg"
-    }
-  },
   "icons": {
-    "16": "icon.svg",
-    "32": "icon.svg",
-    "48": "icon.svg",
-    "128": "icon.svg"
-  },
-  "permissions": [
-    "storage",
-    "tabs",
-    "notifications",
-    "declarativeNetRequest",
-    "scripting"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
-  "background": {
-    "service_worker": "background.js"
-  },
-  "content_scripts": [
-    {
-      "matches": [
-        "http://*/*",
-        "https://*/*"
-      ],
-      "js": [
-        "content.js"
-      ],
-      "run_at": "document_idle"
-    }
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": [
-        "styles.css",
-        "icon.svg"
-      ],
-      "matches": [
-        "<all_urls>"
-      ]
-    }
-  ]
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
 }
