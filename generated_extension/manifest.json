@@ -1,53 +1,41 @@
 {
   "manifest_version": 3,
-  "name": "QR Link",
+  "name": "Aegis Adblock",
   "version": "1.0.0",
-  "description": "Instantly generate a QR code for the current tab's URL in a sleek cyberpunk popup.",
+  "description": "Lightweight MV3 adblocker with dynamic tracker updates and a sleek cyberpunk UI.",
   "action": {
-    "default_title": "QR Link",
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icon.svg",
-      "32": "icon.svg",
-      "128": "icon.svg"
-    }
-  },
-  "icons": {
-    "16": "icon.svg",
-    "32": "icon.svg",
-    "128": "icon.svg"
+    "default_title": "Aegis Adblock",
+    "default_popup": "popup.html"
   },
   "permissions": [
-    "activeTab",
-    "tabs"
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "declarativeNetRequestFeedback",
+    "storage",
+    "tabs",
+    "activeTab"
   ],
   "host_permissions": [
-    "https://api.qrserver.com/*"
+    "<all_urls>"
   ],
   "background": {
     "service_worker": "background.js",
     "type": "module"
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "content.js"
-      ],
-      "run_at": "document_idle"
-    }
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": [
-        "styles.css",
-        "icon.svg"
-      ],
-      "matches": [
-        "<all_urls>"
-      ]
-    }
-  ]
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "rules_1",
+        "enabled": true,
+        "path": "rules/static_rules.json"
+      }
+    ]
+  },
+  "minimum_chrome_version": "114"
 }

@@ -1,41 +1,36 @@
-QR Link - Chrome Extension (MV3)
+Aegis Adblock (MV3)
 
-Description
-- Click the extension icon to open a sleek cyberpunk popup that automatically reads the active tab URL and generates a QR code using goqr.me (https://api.qrserver.com/v1/create-qr-code/).
-- The QR is centered prominently with the URL displayed below. Includes Copy and Download actions.
+Overview
+- MV3 declarativeNetRequest-based adblocker. Ships with a small static ruleset for common trackers and supports dynamic updates from public lists (StevenBlack hosts or EasyPrivacy).
+- Popup UI: toggle protection, see blocked counters, update list, whitelist current site, view rule stats. Modern cyberpunk/glass dark UI with red-pink gradient; no external libraries.
 
-Features
-- Auto-detect active tab URL on popup open.
-- Instant QR generation via remote image (no libraries).
-- Modern dark/cyberpunk glass UI, neon accents, animated entrance, hover transforms, focus glows.
-- Copy URL to clipboard, Download QR as PNG, Open URL in new tab.
-
-How it works
-- popup.js queries chrome.tabs for the active tab (requires activeTab/tabs). It builds a QR image URL and sets it as <img src>.
-- No content script interaction is needed now (stub included for future use).
-
-Install (Developer Mode)
-1. Download the folder contents as-is.
-2. Visit chrome://extensions in Chrome.
-3. Enable Developer mode (top right).
-4. Click "Load unpacked" and select the folder containing manifest.json and files.
-5. Pin the extension and click the icon to use.
+How it blocks
+- Static rules: Provided in rules/static_rules.json. Enabled/disabled via updateEnabledRulesets.
+- Dynamic rules: Fetched by background.js from a selected source and converted to DNR rules (block third-party requests). Limited to ~1500 to respect dynamic rule caps/performance.
+- Counters: Uses declarativeNetRequest.onRuleMatchedDebug to count blocks, stored in chrome.storage.local.
 
 Permissions
-- activeTab: Grants temporary access to the active tab when you click the extension.
-- tabs: Allows reading the URL field of the active tab.
-- host_permissions: https://api.qrserver.com/* to fetch the QR image.
+- declarativeNetRequest, declarativeNetRequestWithHostAccess, declarativeNetRequestFeedback: blocking + counters + dynamic rule updates.
+- host_permissions: <all_urls> so the rules can match network requests and to fetch lists cross-origin.
+- storage: store settings and counters. tabs/activeTab: used by the popup to get current site for whitelisting.
+
+UI usage
+- Protection toggle: Enables/disables the static ruleset; dynamic rules are cleared when disabled and retained when re-enabled.
+- Update List: Pulls a public tracker list and converts it to dynamic rules (takes a few seconds). Last update timestamp is displayed.
+- Whitelist This Site: Adds a high-priority allow rule for the current site's initiator domain.
+- Reset Counters: Zeroes session and total counters.
+- View Rules: Shows a quick count of enabled static and dynamic rules.
 
 Notes
-- Some internal pages (chrome://, chrome Web Store) may restrict access to their URL. The popup will still attempt to display any available URL, but if it cannot, a message will be shown.
-- If the QR fails to load (rare), use the refresh button in the popup.
+- Blocking rules use thirdParty domainType to reduce breakage.
+- Some lists may change format or be rate-limited; if fetching fails, try again later or switch source.
+- The included static rules cover many common ad/analytics networks; for maximal coverage, use dynamic updates.
 
-Customization
-- To change QR size, edit QR_SIZE in popup.js (default 280px) and CSS .qr-img width if desired.
-- Theme colors can be updated via CSS variables at the top of styles.css.
-
-Privacy
-- No analytics or tracking. The current tab URL is sent only to the QR generation service to render an image.
+Install
+1) Save the files to a folder, preserving the rules/ subfolder.
+2) Visit chrome://extensions, enable Developer mode.
+3) Click Load unpacked and select the folder.
+4) Pin Aegis Adblock and click its icon to open the popup.
 
 License
-- For demo purposes. Icons and UI are original and free to use for this extension.
+- Rules derived from public sources (StevenBlack hosts, EasyPrivacy) are subject to their respective licenses.
