@@ -1,0 +1,1 @@
+1. Install the extension by navigating to chrome://extensions/ and enabling Developer Mode. Click 'Load unpacked' and select the folder containing this extension. 2. Visit any webpage and click the extension icon to see the extracted meta data in a popup. 3. Use the 'Copy JSON' button to copy the data to the clipboard.

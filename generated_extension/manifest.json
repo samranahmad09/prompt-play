@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Meta Data Extractor",
+  "version": "1.0",
+  "description": "Extracts and displays the Meta Title, Meta Description, Canonical Tag, and H1 header of the current page.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "clipboardWrite"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.svg"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}

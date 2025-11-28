@@ -1,0 +1,1 @@
+// This file is intentionally left blank as all execution is handled through scripting in popup.js
